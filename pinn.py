@@ -102,25 +102,5 @@ for epoch in pbar:
     loss_record.append(loss.numpy())
     if (epoch % 10 == 0):
         pbar.set_description("Epoch: %d | Loss: %.6f | Training Progress" % (epoch, loss.numpy()))
-
-y = model(tf.concat([x_train, 0.1 * tf.ones_like(t_train)], axis=1))
-y_train = tf.reshape(y, (-1))
-
-fig = plt.figure()
-ax = plt.axes(xlim=(-L, L), ylim=(-1, 5))
-line, = ax.plot([], [], 'o', lw=3)
-
-def init():
-    line.set_data([], [])
-    return line,
-def animate(i):
-    i = i * 0.005
-    y = model(tf.concat([x_train,  i * tf.ones_like(t_train)], axis=1))
-    y_train = tf.reshape(y, (-1))
-    line.set_data(x_train, y_train)
-    return line,
-
-anim = FuncAnimation(fig, animate, init_func=init,
-                               frames=250, interval=10, blit=True)
-
-plt.show()
+        
+model._model.export("model_5l_50n")
